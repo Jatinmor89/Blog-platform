@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const CATEGORIES = ['All', 'Technology', 'Travel', 'Food', 'Lifestyle', 'Health', 'Finance', 'Education', 'General'];
 const EMOJIS = { Technology: '💻', Travel: '✈️', Food: '🍕', Lifestyle: '🌿', Health: '💪', Finance: '💰', Education: '📚', General: '📝' };
 
@@ -22,7 +22,7 @@ function Home({ user }) {
     try {
       const params = new URLSearchParams({ category, page });
       if (search) params.append('search', search);
-      const res = await fetch(`/api/posts?${params}`);
+      const res = await fetch(`${API}/api/posts?${params}`);
       const data = await res.json();
       setPosts(data.posts || []);
       setTotalPages(data.pages || 1);
