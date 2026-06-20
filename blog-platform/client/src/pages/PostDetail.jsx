@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 function PostDetail({ token, user }) {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -11,7 +13,7 @@ function PostDetail({ token, user }) {
   const [comment, setComment] = useState('');
 
   useEffect(() => {
-    fetch(`/api/posts/${id}`)
+    fetch(`${API}/api/posts/${id}`)
       .then(r => r.json())
       .then(data => {
         setPost(data);
@@ -24,7 +26,7 @@ function PostDetail({ token, user }) {
 
   const handleLike = async () => {
     if (!token) return navigate('/login');
-    const res = await fetch(`/api/posts/${id}/like`, {
+    const res = await fetch(`${API}/api/posts/${id}/like`, {
       method: 'PUT',
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -37,7 +39,7 @@ function PostDetail({ token, user }) {
     e.preventDefault();
     if (!token) return navigate('/login');
     if (!comment.trim()) return;
-    const res = await fetch(`/api/posts/${id}/comments`, {
+    const res = await fetch(`${API}/api/posts/${id}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify({ text: comment })
@@ -49,7 +51,7 @@ function PostDetail({ token, user }) {
 
   const handleDelete = async () => {
     if (!window.confirm('Delete this post?')) return;
-    await fetch(`/api/posts/${id}`, {
+    await fetch(`${API}/api/posts/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` }
     });

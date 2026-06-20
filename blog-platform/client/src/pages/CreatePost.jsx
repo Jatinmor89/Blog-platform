@@ -1,35 +1,28 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const CATEGORIES = ['Technology', 'Travel', 'Food', 'Lifestyle', 'Health', 'Finance', 'Education', 'General'];
 
 function CreatePost({ token }) {
-  const [form, setForm] = useState({ title: '', content: '', category: 'General', coverImage: '' });
-  const [tags, setTags] = useState([]);
-  const [tagInput, setTagInput] = useState('');
+  const [form, setForm] = useState({ title: '', content: '', category: 'General' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  const addTag = (e) => {
-    if (e.key === 'Enter' && tagInput.trim()) {
-      e.preventDefault();
-      if (!tags.includes(tagInput.trim())) setTags([...tags, tagInput.trim()]);
-      setTagInput('');
-    }
-  };
-
-  const removeTag = (tag) => setTags(tags.filter(t => t !== tag));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('/api/posts', {
+      const res = await fetch(`${API}/api/posts`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ ...form, tags })
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(form)
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
@@ -41,40 +34,34 @@ function CreatePost({ token }) {
   };
 
   return (
-    <div className="create-page">
-      <div className="create-title">✍️ Write a New Post</div>
-      {error && <div className="form-error" style={{ marginBottom: '16px' }}>{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label className="form-label">Title</label>
-          <input className="form-input" placeholder="Enter an engaging title..."
-            value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Category</label>
-          <select className="form-select" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })}>
-            {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-          </select>
-        </div>
-        <div className="form-group">
-          <label className="form-label">Tags (press Enter to add)</label>
-          <div className="tags-input">
-            {tags.map(tag => (
-              <span key={tag} className="tag">{tag}<button type="button" onClick={() => removeTag(tag)}>×</button></span>
-            ))}
-            <input className="tag-input-field" placeholder="Add tag..." value={tagInput}
-              onChange={e => setTagInput(e.target.value)} onKeyDown={addTag} />
+    <div className="container">
+      <div className="auth-box" style={{ maxWidth: '700px' }}>
+        <div className="auth-title">Write a New Post ✍️</div>
+        <div className="auth-sub">Share your story with the BlogVerse community</div>
+        {error && <div className="form-error" style={{ marginBottom: '16px', textAlign: 'center' }}>{error}</div>}
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="form-label">Title</label>
+            <input className="form-input" type="text" placeholder="Enter a catchy title"
+              value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required />
           </div>
-        </div>
-        <div className="form-group">
-          <label className="form-label">Content</label>
-          <textarea className="form-textarea" placeholder="Write your story here..."
-            value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} required />
-        </div>
-        <button className="submit-btn" type="submit" disabled={loading}>
-          {loading ? 'Publishing...' : '🚀 Publish Post'}
-        </button>
-      </form>
+          <div className="form-group">
+            <label className="form-label">Category</label>
+            <select className="form-input" value={form.category}
+              onChange={e => setForm({ ...form, category: e.target.value })}>
+              {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+            </select>
+          </div>
+          <div className="form-group">
+            <label className="form-label">Content</label>
+            <textarea className="form-input" rows={10} placeholder="Write your post here..."
+              value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} required />
+          </div>
+          <button className="submit-btn" type="submit" disabled={loading}>
+            {loading ? 'Publishing...' : 'Publish Post →'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

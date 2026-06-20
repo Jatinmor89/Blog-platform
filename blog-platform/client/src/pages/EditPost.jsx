@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const CATEGORIES = ['Technology', 'Travel', 'Food', 'Lifestyle', 'Health', 'Finance', 'Education', 'General'];
 
 function EditPost({ token }) {
@@ -11,7 +13,7 @@ function EditPost({ token }) {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch(`/api/posts/${id}`)
+    fetch(`${API}/api/posts/${id}`)
       .then(r => r.json())
       .then(data => setForm({ title: data.title, content: data.content, category: data.category }));
   }, [id]);
@@ -20,7 +22,7 @@ function EditPost({ token }) {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch(`/api/posts/${id}`, {
+      const res = await fetch(`${API}/api/posts/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(form)
