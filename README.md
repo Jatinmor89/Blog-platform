@@ -105,22 +105,6 @@ Client runs on http://localhost:5173
 
 ---
 
-## 🗂️ Part of My 15-Project Series
-
-| # | Project | Level | Status |
-|---|---------|-------|--------|
-| 1 | Animated Landing Page | 🟢 Beginner | ✅ Done |
-| 2 | Quiz App | 🟢 Beginner | ✅ Done |
-| 3 | GitHub Profile Finder | 🟡 Intermediate | ✅ Done |
-| 4 | Expense Tracker | 🟡 Intermediate | ✅ Done |
-| 5 | Pokemon Explorer | 🟡 Intermediate | ✅ Done |
-| **6** | **Blog Platform** | 🔴 Advanced | ✅ **This Project** |
-| 7 | Real-time Chat | 🔴 Advanced | 🔜 |
-| 8 | E-commerce Store | 🔴 Advanced | 🔜 |
-| 9 | AI Image Generator | 🔴 Advanced | 🔜 |
-| 10 | NeuralChat AI | 🔴 Advanced | 🔜 |
-
----
 
 ## 👤 Author
 
