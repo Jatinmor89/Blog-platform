@@ -1,4 +1,4 @@
-# ✍️ BlogVerse — Full Stack Blog Platform
+# ✍️ BlogVerse —  Blog Platform
 
 A full stack **Blog Platform** built with **React + Node.js + Express + MongoDB Atlas**.  
 Write, publish, like, and comment on blog posts with full authentication!
